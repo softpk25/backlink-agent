@@ -35,7 +35,7 @@ This happens because Google expects the exact redirect URI that's registered in 
 
 1. **Run the Authentication Setup**
    ```bash
-   cd C:\Users\jyoti\Desktop\prometrix\Backlink-Off-Page
+   cd ..\prometrix\Backlink-Off-Page
    python setup_gsc_auth.py
    ```
 
