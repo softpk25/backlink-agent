@@ -17,7 +17,7 @@
 To start the server, open a terminal in the project directory and run:
 
 ```bash
-cd C:\Users\jyoti\Desktop\prometrix\Backlink-Off-Page
+cd ..\prometrix\Backlink-Off-Page
 python main.py
 ```
 
