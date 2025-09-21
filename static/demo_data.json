@@ -1,0 +1,28 @@
+{
+  "cards": {
+    "total_backlinks": 1247,
+    "referring_domains": 356,
+    "average_da": 42,
+    "toxic_links": 23
+  },
+  "health_scorecard": {
+    "healthy": 812,
+    "warning": 412,
+    "toxic": 23
+  },
+  "anchor_distribution": {
+    "Branded": 320,
+    "Exact Match": 210,
+    "Partial Match": 460,
+    "Generic": 150,
+    "Naked URL": 107
+  },
+  "risk_table": [
+    {"source_domain": "spammysite.com", "da": 8, "risk_level": "high", "anchor_text": "cheap loans"},
+    {"source_domain": "lowqualityblog.xyz", "da": 12, "risk_level": "high", "anchor_text": "best casino"},
+    {"source_domain": "ok-forum.net", "da": 28, "risk_level": "medium", "anchor_text": "click here"},
+    {"source_domain": "qualityblog.com", "da": 67, "risk_level": "low", "anchor_text": "financial planning"},
+    {"source_domain": "resourcepage.org", "da": 55, "risk_level": "low", "anchor_text": "our brand"}
+  ]
+}
+

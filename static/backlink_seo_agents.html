@@ -1,0 +1,1612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Backlink & Off-Page SEO Agents - Prometrix</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        :root {
+            --primary: #5046e5;
+            --primary-dark: #4039c0;
+            --secondary: #00c4cc;
+            --text-dark: #1a202c;
+            --text-light: #718096;
+            --bg-light: #f7fafc;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-dark);
+        }
+        
+        .sidebar {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            min-height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 280px;
+            z-index: 40;
+        }
+        
+        .main-content {
+            margin-left: 280px;
+            min-height: 100vh;
+            background-color: #f8fafc;
+        }
+        
+        .nav-item {
+            padding: 12px 24px;
+            margin: 4px 16px;
+            border-radius: 8px;
+            color: rgba(255, 255, 255, 0.8);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .nav-item:hover, .nav-item.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: all 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+        
+        .btn-secondary {
+            background-color: white;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        
+        .btn-secondary:hover {
+            background-color: rgba(80, 70, 229, 0.05);
+        }
+        
+        .metric-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            border-left: 4px solid var(--primary);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .risk-high { color: #ef4444; }
+        .risk-medium { color: #f59e0b; }
+        .risk-low { color: #10b981; }
+        
+        .tab-button {
+            padding: 12px 20px;
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--text-light);
+        }
+        
+        .tab-button.active {
+            border-bottom-color: var(--primary);
+            color: var(--primary);
+            font-weight: 500;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 50;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.show {
+            display: flex;
+        }
+        
+        .ai-panel {
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            border: 1px solid var(--secondary);
+            border-radius: 12px;
+            padding: 20px;
+            position: relative;
+        }
+        
+        .ai-panel::before {
+            content: '🤖';
+            position: absolute;
+            top: -8px;
+            left: 16px;
+            background: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+        }
+        
+        .progress-bar {
+            background-color: #e2e8f0;
+            border-radius: 999px;
+            height: 8px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transition: width 0.3s ease;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin: 20px 0;
+        }
+        
+        .floating-panel {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 320px;
+            z-index: 30;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+        
+        .tag {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+            margin: 2px;
+        }
+        
+        .tag-branded { background-color: #dbeafe; color: #1e40af; }
+        .tag-exact { background-color: #fef3c7; color: #92400e; }
+        .tag-generic { background-color: #f3e8ff; color: #7c3aed; }
+        
+        .content-section {
+            display: none;
+        }
+        
+        .content-section.active {
+            display: block;
+        }
+        
+        .tooltip {
+            position: relative;
+            cursor: help;
+        }
+        
+        .tooltip::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #1f2937;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+            z-index: 10;
+        }
+        
+        .tooltip:hover::after {
+            opacity: 1;
+        }
+        
+        .animate-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .5; }
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 16px 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid var(--secondary);
+            z-index: 60;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <div class="p-6">
+            <div class="flex items-center text-white mb-8">
+                <svg class="h-8 w-8 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
+                </svg>
+                <div>
+                    <h1 class="text-xl font-bold">Backlink & Off-Page SEO</h1>
+                    <p class="text-sm opacity-75">Prometrix SEO Module</p>
+                </div>
+            </div>
+            
+            <nav>
+                <div class="nav-item active" onclick="showSection('intelligence')">
+                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                    </svg>
+                    Backlink Intelligence
+                </div>
+                <div class="nav-item" onclick="showSection('competitor')">
+                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                    Competitor Backlink Spy
+                </div>
+                <div class="nav-item" onclick="showSection('campaigns')">
+                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/>
+                    </svg>
+                    Link Building Campaigns
+                </div>
+            </nav>
+        </div>
+        
+        <div class="absolute bottom-0 left-0 right-0 p-6">
+            <div class="bg-white bg-opacity-10 rounded-lg p-4">
+                <h3 class="text-white font-semibold mb-2">Need Help?</h3>
+                <p class="text-white text-opacity-75 text-sm mb-3">Check our documentation for guides and best practices.</p>
+                <button class="text-white underline text-sm">View Docs</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <!-- Header -->
+        <header class="bg-white border-b border-gray-200 px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-900" id="page-title">Backlink Intelligence</h2>
+                    <p class="text-gray-600" id="page-subtitle">Monitor and optimize your backlink profile with AI-powered insights</p>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <button class="btn-secondary" onclick="showModal('import-modal')">
+                        <svg class="h-4 w-4 inline mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"/>
+                        </svg>
+                        Import Data
+                    </button>
+                    <button class="btn-primary" onclick="showModal('export-modal')">
+                        <svg class="h-4 w-4 inline mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l3-3m0 0l-3-3m3 3H9"/>
+                        </svg>
+                        Export Report
+                    </button>
+                    <button class="btn-secondary" onclick="toggleDemo()">
+                        <svg class="h-4 w-4 inline mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                        Demo Data
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Content Sections -->
+        <div class="p-6">
+            <!-- Backlink Intelligence Section -->
+            <div id="intelligence-section" class="content-section active">
+                <!-- Data Input Panel -->
+                <div class="card p-6 mb-6">
+                    <h3 class="text-lg font-semibold mb-4">Domain Analysis Setup</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Your Domain</label>
+                            <input type="text" placeholder="example.com" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Data Source</label>
+                            <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option>Ahrefs API</option>
+                                <option>SEMrush API</option>
+                                <option>Moz API</option>
+                                <option>Google Search Console</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Analysis Period</label>
+                            <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option>Last 30 days</option>
+                                <option>Last 90 days</option>
+                                <option>Last 6 months</option>
+                                <option>Last year</option>
+                            </select>
+                        </div>
+                        <div class="flex items-end space-x-2">
+                            <button class="btn-secondary w-1/2" onclick="connectGSC()">
+                                <svg class="h-4 w-4 inline mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                                </svg>
+                                Connect GSC
+                            </button>
+                            <button class="btn-primary w-1/2" onclick="analyzeBacklinks()">
+                                <svg class="h-4 w-4 inline mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                                </svg>
+                                Analyze
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Metrics Dashboard -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                    <div class="metric-card">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-600">Total Backlinks</p>
+                                <p class="text-2xl font-bold text-gray-900">-</p>
+                                <p class="text-sm text-green-600">+12% this month</p>
+                            </div>
+                            <div class="bg-blue-100 rounded-full p-3">
+                                <svg class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-600">Referring Domains</p>
+                                <p class="text-2xl font-bold text-gray-900">-</p>
+                                <p class="text-sm text-green-600">+8% this month</p>
+                            </div>
+                            <div class="bg-green-100 rounded-full p-3">
+                                <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9v-9m0-9v9"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-600">Average DA</p>
+                                <p class="text-2xl font-bold text-gray-900">-</p>
+                                <p class="text-sm text-yellow-600">-2 this month</p>
+                            </div>
+                            <div class="bg-yellow-100 rounded-full p-3">
+                                <svg class="h-6 w-6 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-600">Toxic Links</p>
+                                <p class="text-2xl font-bold text-red-600">-</p>
+                                <p class="text-sm text-red-600">Need attention</p>
+                            </div>
+                            <div class="bg-red-100 rounded-full p-3">
+                                <svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.728-.833-2.498 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts and Analysis -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                    <div class="card p-6">
+                        <h3 class="text-lg font-semibold mb-4">Link Health Scorecard</h3>
+                        <div class="chart-container">
+                            <canvas id="healthChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="card p-6">
+                        <h3 class="text-lg font-semibold mb-4">Anchor Text Distribution</h3>
+                        <div class="chart-container">
+                            <canvas id="anchorChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI-Powered Risk Analysis -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-2">
+                        <div class="card p-6">
+                            <h3 class="text-lg font-semibold mb-4">Risk Assessment Table</h3>
+                            <div class="overflow-x-auto">
+                                <table class="w-full">
+                                    <thead>
+                                        <tr class="border-b">
+                                            <th class="text-left py-3 px-4">Source Domain</th>
+                                            <th class="text-left py-3 px-4">DA</th>
+                                            <th class="text-left py-3 px-4">Risk Level</th>
+                                            <th class="text-left py-3 px-4">Anchor Text</th>
+                                            <th class="text-left py-3 px-4">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tbody id="risk-table-body"></tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="ai-panel">
+                        <h3 class="text-lg font-semibold mb-4 text-gray-800">AI Recommendations</h3>
+                        <div class="space-y-4">
+                            <div class="bg-white rounded-lg p-4 border border-blue-200">
+                                <h4 class="font-semibold text-blue-800 mb-2">🚨 Urgent Action Required</h4>
+                                <p class="text-sm text-gray-700 mb-3">23 toxic links detected. Immediate disavow recommended to protect your rankings.</p>
+                                <button class="btn-primary text-xs" onclick="generateDisavowFile()">Generate Disavow File</button>
+                            </div>
+                            
+                            <div class="bg-white rounded-lg p-4 border border-green-200">
+                                <h4 class="font-semibold text-green-800 mb-2">📈 Growth Opportunity</h4>
+                                <p class="text-sm text-gray-700 mb-3">Focus on acquiring more editorial links from DA 50+ sites in your niche.</p>
+                                <button class="btn-secondary text-xs">View Targets</button>
+                            </div>
+                            
+                            <div class="bg-white rounded-lg p-4 border border-yellow-200">
+                                <h4 class="font-semibold text-yellow-800 mb-2">⚖️ Anchor Text Balance</h4>
+                                <p class="text-sm text-gray-700 mb-3">Reduce exact match anchors by 15% to maintain natural profile.</p>
+                                <button class="btn-secondary text-xs">View Strategy</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Competitor Backlink Spy Section -->
+            <div id="competitor-section" class="content-section">
+                <!-- Competitor Input Panel -->
+                <div class="card p-6 mb-6">
+                    <h3 class="text-lg font-semibold mb-4">Competitive Analysis Setup</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Your Domain</label>
+                            <input type="text" placeholder="yourdomain.com" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Competitor Domains (up to 5)</label>
+                            <div class="space-y-2">
+                                <input type="text" placeholder="competitor1.com" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <input type="text" placeholder="competitor2.com" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Min Domain Authority</label>
+                            <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option>Any</option>
+                                <option>30+</option>
+                                <option>50+</option>
+                                <option>70+</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Link Type</label>
+                            <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option>All Types</option>
+                                <option>Editorial</option>
+                                <option>Guest Posts</option>
+                                <option>Resource Pages</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Link Placement</label>
+                            <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option>Any</option>
+                                <option>Body Content</option>
+                                <option>Footer</option>
+                                <option>Sidebar</option>
+                            </select>
+                        </div>
+                        <div class="flex items-end">
+                            <button class="btn-primary w-full" onclick="analyzeCompetitors()">
+                                <svg class="h-4 w-4 inline mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                                </svg>
+                                Analyze Gaps
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Link Gap Matrix -->
+                <div class="card p-6 mb-6">
+                    <h3 class="text-lg font-semibold mb-4">Link Gap Opportunities</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead>
+                                <tr class="border-b">
+                                    <th class="text-left py-3 px-4">Linking Domain</th>
+                                    <th class="text-left py-3 px-4">DA</th>
+                                    <th class="text-left py-3 px-4">Your Site</th>
+                                    <th class="text-left py-3 px-4">Competitor A</th>
+                                    <th class="text-left py-3 px-4">Competitor B</th>
+                                    <th class="text-left py-3 px-4">Effort Level</th>
+                                    <th class="text-left py-3 px-4">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b hover:bg-gray-50">
+                                    <td class="py-3 px-4 font-medium">techcrunch.com</td>
+                                    <td class="py-3 px-4">93</td>
+                                    <td class="py-3 px-4">❌</td>
+                                    <td class="py-3 px-4">✅</td>
+                                    <td class="py-3 px-4">✅</td>
+                                    <td class="py-3 px-4"><span class="px-2 py-1 bg-red-100 text-red-800 rounded-full text-xs">Hard</span></td>
+                                    <td class="py-3 px-4">
+                                        <button class="btn-secondary text-xs" onclick="startOutreach('techcrunch.com')">Start Outreach</button>
+                                    </td>
+                                </tr>
+                                <tr class="border-b hover:bg-gray-50">
+                                    <td class="py-3 px-4 font-medium">industryblog.net</td>
+                                    <td class="py-3 px-4">67</td>
+                                    <td class="py-3 px-4">❌</td>
+                                    <td class="py-3 px-4">✅</td>
+                                    <td class="py-3 px-4">❌</td>
+                                    <td class="py-3 px-4"><span class="px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs">Medium</span></td>
+                                    <td class="py-3 px-4">
+                                        <button class="btn-primary text-xs" onclick="startOutreach('industryblog.net')">Start Outreach</button>
+                                    </td>
+                                </tr>
+                                <tr class="border-b hover:bg-gray-50">
+                                    <td class="py-3 px-4 font-medium">smallbusiness.com</td>
+                                    <td class="py-3 px-4">45</td>
+                                    <td class="py-3 px-4">❌</td>
+                                    <td class="py-3 px-4">❌</td>
+                                    <td class="py-3 px-4">✅</td>
+                                    <td class="py-3 px-4"><span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">Easy</span></td>
+                                    <td class="py-3 px-4">
+                                        <button class="btn-primary text-xs" onclick="startOutreach('smallbusiness.com')">Start Outreach</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Effort vs Reward Chart and Content Opportunities -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="card p-6">
+                        <h3 class="text-lg font-semibold mb-4">Effort vs Reward Analysis</h3>
+                        <div class="chart-container">
+                            <canvas id="effortRewardChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="card p-6">
+                        <h3 class="text-lg font-semibold mb-4">Content Opportunities</h3>
+                        <div class="space-y-4">
+                            <div class="border border-gray-200 rounded-lg p-4">
+                                <h4 class="font-semibold text-gray-800 mb-2">Comparison Articles</h4>
+                                <p class="text-sm text-gray-600 mb-3">Write "Best CRM Software" comparison to target 15 high-authority sites linking to competitors' similar content.</p>
+                                <div class="flex space-x-2">
+                                    <span class="tag tag-branded">15 targets</span>
+                                    <span class="tag tag-exact">Avg DA: 58</span>
+                                </div>
+                                <button class="btn-primary text-xs mt-3">Create Content Brief</button>
+                            </div>
+                            
+                            <div class="border border-gray-200 rounded-lg p-4">
+                                <h4 class="font-semibold text-gray-800 mb-2">Resource Pages</h4>
+                                <p class="text-sm text-gray-600 mb-3">Target 23 industry resource pages that link to competitor tools but not yours.</p>
+                                <div class="flex space-x-2">
+                                    <span class="tag tag-generic">23 targets</span>
+                                    <span class="tag tag-branded">Avg DA: 41</span>
+                                </div>
+                                <button class="btn-secondary text-xs mt-3">View Target List</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Link Building Campaigns Section -->
+            <div id="campaigns-section" class="content-section">
+                <!-- Campaign Setup Panel -->
+                <div class="card p-6 mb-6">
+                    <h3 class="text-lg font-semibold mb-4">Create New Link Building Campaign</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Campaign Name</label>
+                            <input type="text" placeholder="Q3 Guest Post Outreach" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            
+                            <label class="block text-sm font-medium text-gray-700 mb-2 mt-4">URL to Promote</label>
+                            <input type="text" placeholder="https://yoursite.com/target-page" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            
+                            <label class="block text-sm font-medium text-gray-700 mb-2 mt-4">Target Keywords</label>
+                            <input type="text" placeholder="digital marketing, SEO tools" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Prospect Type</label>
+                            <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option>Blogger/Content Creator</option>
+                                <option>Journalist</option>
+                                <option>Industry Expert</option>
+                                <option>SaaS Founder</option>
+                                <option>Marketing Director</option>
+                            </select>
+                            
+                            <label class="block text-sm font-medium text-gray-700 mb-2 mt-4">Email Tone</label>
+                            <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option>Professional</option>
+                                <option>Friendly</option>
+                                <option>Bold/Direct</option>
+                                <option>Casual</option>
+                            </select>
+                            
+                            <label class="block text-sm font-medium text-gray-700 mb-2 mt-4">Prospect Source</label>
+                            <div class="flex space-x-2">
+                                <button class="btn-secondary flex-1" onclick="showModal('import-prospects-modal')">Import CSV</button>
+                                <button class="btn-primary flex-1" onclick="findProspectsWithAI()">Find with AI</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Campaign Flow Builder -->
+                <div class="card p-6 mb-6">
+                    <h3 class="text-lg font-semibold mb-4">Email Sequence Builder</h3>
+                    <div class="space-y-4">
+                        <!-- Step 1 -->
+                        <div class="border border-gray-200 rounded-lg p-4 bg-blue-50">
+                            <div class="flex items-center justify-between mb-3">
+                                <h4 class="font-semibold text-blue-800">📧 Step 1: Initial Outreach</h4>
+                                <span class="text-sm text-blue-600">Sends immediately</span>
+                            </div>
+                            <textarea class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" rows="4" placeholder="AI will generate personalized email content here...">Hi {{first_name}},
+
+I came across your recent article on {{topic}} and found your insights on {{specific_point}} particularly valuable.
+
+I've been working on a comprehensive guide about {{your_topic}} that I think would be a great resource for your audience. Would you be interested in taking a look?
+
+Best regards,
+{{your_name}}</textarea>
+                            <div class="flex space-x-2 mt-3">
+                                <button class="btn-primary text-xs" onclick="generateEmailContent(1)">🤖 Generate with AI</button>
+                                <button class="btn-secondary text-xs">Preview</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 2 -->
+                        <div class="border border-gray-200 rounded-lg p-4 bg-yellow-50">
+                            <div class="flex items-center justify-between mb-3">
+                                <h4 class="font-semibold text-yellow-800">⏰ Step 2: Follow-up</h4>
+                                <span class="text-sm text-yellow-600">3 days after step 1</span>
+                            </div>
+                            <textarea class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" rows="3" placeholder="Follow-up email content...">Hi {{first_name}},
+
+Just wanted to follow up on my previous email about the {{your_topic}} guide. I know how busy you must be, so I'll keep this brief.
+
+I've actually added a section specifically about {{relevant_subtopic}} based on your article. Would love to get your thoughts on it.
+
+Best,
+{{your_name}}</textarea>
+                            <div class="flex space-x-2 mt-3">
+                                <button class="btn-primary text-xs" onclick="generateEmailContent(2)">🤖 Generate with AI</button>
+                                <button class="btn-secondary text-xs">Preview</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 3 -->
+                        <div class="border border-gray-200 rounded-lg p-4 bg-green-50">
+                            <div class="flex items-center justify-between mb-3">
+                                <h4 class="font-semibold text-green-800">🎯 Step 3: Final Touch</h4>
+                                <span class="text-sm text-green-600">7 days after step 2</span>
+                            </div>
+                            <textarea class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" rows="3" placeholder="Final follow-up content...">Hi {{first_name}},
+
+This will be my last email about the {{your_topic}} guide. I understand if it's not a fit right now.
+
+If you change your mind or know someone who might be interested, the guide is live at {{guide_url}}.
+
+Thanks for your time!
+{{your_name}}</textarea>
+                            <div class="flex space-x-2 mt-3">
+                                <button class="btn-primary text-xs" onclick="generateEmailContent(3)">🤖 Generate with AI</button>
+                                <button class="btn-secondary text-xs">Preview</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-between mt-6">
+                        <button class="btn-secondary">Save as Template</button>
+                        <button class="btn-primary" onclick="launchCampaign()">Launch Campaign</button>
+                    </div>
+                </div>
+
+                <!-- Active Campaigns Dashboard -->
+                <div class="card p-6">
+                    <h3 class="text-lg font-semibold mb-4">Active Campaigns</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                        <div class="text-center">
+                            <p class="text-2xl font-bold text-blue-600">67%</p>
+                            <p class="text-sm text-gray-600">Open Rate</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-2xl font-bold text-green-600">23%</p>
+                            <p class="text-sm text-gray-600">Reply Rate</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-2xl font-bold text-purple-600">12</p>
+                            <p class="text-sm text-gray-600">Links Acquired</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-2xl font-bold text-orange-600">156</p>
+                            <p class="text-sm text-gray-600">Active Prospects</p>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <canvas id="campaignChart"></canvas>
+                    </div>
+                    
+                    <!-- Campaign List -->
+                    <div class="mt-6">
+                        <h4 class="font-semibold mb-3">Campaign Performance</h4>
+                        <div class="overflow-x-auto">
+                            <table class="w-full">
+                                <thead>
+                                    <tr class="border-b">
+                                        <th class="text-left py-3 px-4">Campaign</th>
+                                        <th class="text-left py-3 px-4">Status</th>
+                                        <th class="text-left py-3 px-4">Prospects</th>
+                                        <th class="text-left py-3 px-4">Open Rate</th>
+                                        <th class="text-left py-3 px-4">Reply Rate</th>
+                                        <th class="text-left py-3 px-4">Links</th>
+                                        <th class="text-left py-3 px-4">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="border-b hover:bg-gray-50">
+                                        <td class="py-3 px-4 font-medium">Q3 Guest Posts</td>
+                                        <td class="py-3 px-4"><span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">Active</span></td>
+                                        <td class="py-3 px-4">87</td>
+                                        <td class="py-3 px-4">72%</td>
+                                        <td class="py-3 px-4">28%</td>
+                                        <td class="py-3 px-4">8</td>
+                                        <td class="py-3 px-4">
+                                            <button class="btn-secondary text-xs">View Details</button>
+                                        </td>
+                                    </tr>
+                                    <tr class="border-b hover:bg-gray-50">
+                                        <td class="py-3 px-4 font-medium">Resource Pages</td>
+                                        <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">Running</span></td>
+                                        <td class="py-3 px-4">45</td>
+                                        <td class="py-3 px-4">65%</td>
+                                        <td class="py-3 px-4">22%</td>
+                                        <td class="py-3 px-4">4</td>
+                                        <td class="py-3 px-4">
+                                            <button class="btn-secondary text-xs">View Details</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Actions Floating Panel -->
+    <div class="floating-panel ai-panel" id="ai-panel">
+        <h3 class="text-lg font-semibold mb-4 text-gray-800">AI Assistant</h3>
+        <div class="space-y-3">
+            <div class="bg-white rounded-lg p-3 border border-blue-200">
+                <p class="text-sm text-gray-700 mb-2">🎯 <strong>Suggested Action:</strong></p>
+                <p class="text-xs text-gray-600 mb-2">Start outreach to 12 high-DA prospects in your queue</p>
+                <button class="btn-primary text-xs w-full">Take Action</button>
+            </div>
+            
+            <div class="bg-white rounded-lg p-3 border border-yellow-200">
+                <p class="text-sm text-gray-700 mb-2">📊 <strong>Weekly Insight:</strong></p>
+                <p class="text-xs text-gray-600 mb-2">Your reply rates improved 15% with personalized subject lines</p>
+                <button class="btn-secondary text-xs w-full">Learn More</button>
+            </div>
+            
+            <div class="bg-white rounded-lg p-3 border border-green-200">
+                <p class="text-sm text-gray-700 mb-2">✨ <strong>Opportunity Alert:</strong></p>
+                <p class="text-xs text-gray-600 mb-2">3 new broken link opportunities found in your niche</p>
+                <button class="btn-primary text-xs w-full">Investigate</button>
+            </div>
+        </div>
+        
+        <button class="absolute top-2 right-2 text-gray-400 hover:text-gray-600" onclick="toggleAIPanel()">
+            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Import Modal -->
+    <div id="import-modal" class="modal">
+        <div class="bg-white rounded-lg p-6 w-full max-w-md">
+            <h3 class="text-lg font-semibold mb-4">Import Backlink Data</h3>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Data Source</label>
+                    <select class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                        <option>CSV File</option>
+                        <option>Ahrefs Export</option>
+                        <option>SEMrush Export</option>
+                        <option>Moz Export</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Upload File</label>
+                    <input type="file" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                </div>
+            </div>
+            <div class="flex space-x-3 mt-6">
+                <button class="btn-secondary flex-1" onclick="hideModal('import-modal')">Cancel</button>
+                <button class="btn-primary flex-1" onclick="importData()">Import</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Export Modal -->
+    <div id="export-modal" class="modal">
+        <div class="bg-white rounded-lg p-6 w-full max-w-md">
+            <h3 class="text-lg font-semibold mb-4">Export Report</h3>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Report Type</label>
+                    <select class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                        <option>Full Backlink Analysis</option>
+                        <option>Toxic Links Report</option>
+                        <option>Competitor Gap Analysis</option>
+                        <option>Campaign Performance</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Format</label>
+                    <select class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                        <option>PDF Report</option>
+                        <option>CSV Data</option>
+                        <option>Excel Workbook</option>
+                        <option>Disavow File (.txt)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="flex space-x-3 mt-6">
+                <button class="btn-secondary flex-1" onclick="hideModal('export-modal')">Cancel</button>
+                <button class="btn-primary flex-1" onclick="exportData()">Export</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification">
+        <div class="flex items-center">
+            <svg class="h-5 w-5 text-green-600 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+            </svg>
+            <span id="notification-text">Action completed successfully!</span>
+        </div>
+    </div>
+
+    <script>
+        // Navigation and Section Management
+        function showSection(sectionName) {
+            // Hide all sections
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionName + '-section').classList.add('active');
+            
+            // Update navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Update page title and subtitle
+            const titles = {
+                intelligence: {
+                    title: 'Backlink Intelligence',
+                    subtitle: 'Monitor and optimize your backlink profile with AI-powered insights'
+                },
+                competitor: {
+                    title: 'Competitor Backlink Spy',
+                    subtitle: 'Discover link opportunities by analyzing competitor backlink profiles'
+                },
+                campaigns: {
+                    title: 'Link Building Campaigns',
+                    subtitle: 'Create and manage automated email outreach campaigns'
+                }
+            };
+            
+            document.getElementById('page-title').textContent = titles[sectionName].title;
+            document.getElementById('page-subtitle').textContent = titles[sectionName].subtitle;
+        }
+
+        // Modal Management
+        function showModal(modalId) {
+            document.getElementById(modalId).classList.add('show');
+        }
+
+        function hideModal(modalId) {
+            document.getElementById(modalId).classList.remove('show');
+        }
+
+        // AI Panel Toggle
+        function toggleAIPanel() {
+            const panel = document.getElementById('ai-panel');
+            panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // Notification System
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            const notificationText = document.getElementById('notification-text');
+            
+            notificationText.textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Analysis Functions
+        function analyzeBacklinks() {
+            showNotification('Starting backlink analysis...');
+            // Simulate analysis process
+            setTimeout(() => {
+                showNotification('Backlink analysis completed! Found 23 toxic links requiring attention.');
+            }, 2000);
+        }
+
+        function analyzeCompetitors() {
+            showNotification('Analyzing competitor backlinks...');
+            setTimeout(() => {
+                showNotification('Found 47 new link opportunities from competitor analysis.');
+            }, 2500);
+        }
+
+        function generateDisavowFile() {
+            showNotification('Generating disavow file...');
+            setTimeout(() => {
+                showNotification('Disavow file generated with 23 toxic domains.');
+            }, 1500);
+        }
+
+        function markForDisavow(button) {
+            button.textContent = 'Marked ✓';
+            button.classList.remove('btn-secondary');
+            button.classList.add('btn-primary');
+            showNotification('Link marked for disavow');
+        }
+
+        function startOutreach(domain) {
+            showNotification(`Starting outreach campaign for ${domain}`);
+        }
+
+        function generateEmailContent(step) {
+            showNotification(`Generating AI content for email step ${step}...`);
+            setTimeout(() => {
+                showNotification('Email content generated successfully!');
+            }, 1000);
+        }
+
+        function launchCampaign() {
+            showNotification('Launching link building campaign...');
+            setTimeout(() => {
+                showNotification('Campaign launched successfully! 87 prospects added to queue.');
+            }, 2000);
+        }
+
+        function findProspectsWithAI() {
+            showNotification('AI is finding relevant prospects...');
+            setTimeout(() => {
+                showNotification('Found 156 high-quality prospects matching your criteria.');
+            }, 3000);
+        }
+
+        function importData() {
+            hideModal('import-modal');
+            showNotification('Importing backlink data...');
+            setTimeout(() => {
+                showNotification('Successfully imported 1,247 backlinks from CSV file.');
+            }, 2000);
+        }
+
+        function exportData() {
+            hideModal('export-modal');
+            showNotification('Generating export file...');
+            setTimeout(() => {
+                showNotification('Report exported successfully! Download will start shortly.');
+            }, 1500);
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Close modals when clicking outside
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === modal) {
+                        modal.classList.remove('show');
+                    }
+                });
+            });
+        });
+    </script>
+	<script>
+const API = location.origin.includes('localhost') ? 'http://localhost:8882' : location.origin;
+
+// === Backlink Intelligence ===
+async function connectGSC() {
+  try {
+    const res = await fetch(`${API}/backlinkapi/gsc/oauth/start`);
+    if (!res.ok) throw new Error(await res.text());
+    const { auth_url } = await res.json();
+    if (auth_url) {
+      window.open(auth_url, '_blank');
+      showNotification('Opened Google consent screen. Complete it to connect.');
+    } else {
+      showNotification('Failed to get Google auth URL.');
+    }
+  } catch (e) {
+    showNotification('GSC connect failed. Check server logs.');
+    console.error(e);
+  }
+}
+
+async function analyzeBacklinks() {
+  const domain = document.querySelector('input[placeholder="example.com"]').value || 'example.com';
+  const source = document.querySelector('select').value || 'Ahrefs API';
+  const periodLabel = 'Last 30 days';
+  const period = '30d';
+
+  if (source.toLowerCase().includes('google search console')) {
+    try {
+      // Ensure connected
+      const props = await fetch(`${API}/backlinkapi/gsc/properties`);
+      if (props.status === 401) {
+        showNotification('GSC not connected. Click Connect GSC first.');
+        return;
+      }
+      // Pick a siteUrl to analyze
+      let siteUrl = `https://${domain.replace(/\/$/, '')}/`;
+      try {
+        const m = await props.json();
+        const sites = (m.sitesData || []).map(s => s.siteUrl);
+        const match = sites.find(s => s.includes(domain)) || sites[0];
+        if (match) siteUrl = match;
+      } catch {}
+
+      showNotification('Starting GSC analysis...');
+      const res = await fetch(`${API}/backlinkapi/gsc/analyze`, {
+        method: 'POST', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ site_url: siteUrl, days_back: 30 })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.detail || JSON.stringify(data));
+      showNotification(`GSC analysis complete for ${siteUrl}`);
+      await hydrateDashboard();
+      return;
+    } catch (e) {
+      showNotification('GSC analysis failed.');
+      console.error(e);
+      return;
+    }
+  }
+
+  // Fallback to generic analyze endpoint
+  try {
+    showNotification('Starting backlink analysis...');
+    const res = await fetch(`${API}/backlinkapi/analyze`, {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ domain, source, period })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || JSON.stringify(data));
+    showNotification(data.message || 'Analysis complete');
+    await hydrateDashboard();
+  } catch (e) {
+    showNotification('Analysis failed.');
+    console.error(e);
+  }
+}
+
+async function hydrateDashboard() {
+  let data;
+  if (window.demoMode) {
+    try {
+      const res = await fetch(`${API}/backlinkapi/demo`);
+      data = await res.json();
+      renderDemo(data);
+      return;
+    } catch (e) {
+      console.error(e);
+      renderDemo();
+      return;
+    }
+  }
+  const res = await fetch(`${API}/backlinkapi/backlinks/summary`);
+  data = await res.json();
+
+  // Update metric cards
+  const cards = document.querySelectorAll('.metric-card .text-2xl');
+  if (cards.length >= 4) {
+    cards[0].textContent = data.cards.total_backlinks;
+    cards[1].textContent = data.cards.referring_domains;
+    cards[2].textContent = data.cards.average_da;
+    cards[3].textContent = data.cards.toxic_links;
+  }
+
+  // Rebuild charts if present
+  if (window.healthChartObj) window.healthChartObj.destroy();
+  if (window.anchorChartObj) window.anchorChartObj.destroy();
+
+  const healthCtx = document.getElementById('healthChart');
+  if (healthCtx) {
+    window.healthChartObj = new Chart(healthCtx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Healthy Links', 'Warning', 'Toxic'],
+        datasets: [{ data: [data.health_scorecard.healthy, data.health_scorecard.warning, data.health_scorecard.toxic] }]
+      },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+    });
+  }
+
+  const anchorCtx = document.getElementById('anchorChart');
+  if (anchorCtx) {
+    const a = data.anchor_distribution;
+    window.anchorChartObj = new Chart(anchorCtx, {
+      type: 'pie',
+      data: {
+        labels: Object.keys(a),
+        datasets: [{ data: Object.values(a) }]
+      },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+    });
+  }
+}
+
+async function generateDisavowFile() {
+  showNotification('Generating disavow file...');
+  // Collect currently visible "High" risk rows in the table
+  const highs = Array.from(document.querySelectorAll('tbody tr')).filter(tr => tr.innerText.toLowerCase().includes('high'));
+  const domains = highs.map(tr => tr.children[0].innerText.trim());
+  const res = await fetch(`${API}/backlinkapi/disavow/generate`, {
+    method: 'POST', headers: {'Content-Type':'application/json'},
+    body: JSON.stringify(domains)
+  });
+  const blob = await res.blob();
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = 'disavow.txt'; a.click();
+  URL.revokeObjectURL(url);
+  showNotification(`Disavow file generated with ${domains.length} domains.`);
+}
+
+// === Enhanced Competitor Spy ===
+async function analyzeCompetitors() {
+  showNotification('Analyzing competitor backlinks with AI...');
+  
+  // Get form data
+  const yourDomain = document.querySelector('#competitor-section input[placeholder="yourdomain.com"]').value || 'yourdomain.com';
+  const competitorInputs = document.querySelectorAll('#competitor-section input[placeholder^="competitor"]');
+  const competitors = Array.from(competitorInputs).map(i => i.value).filter(Boolean);
+  
+  // Get filter options
+  const minDaSelect = document.querySelector('#competitor-section select');
+  const minDa = minDaSelect ? parseInt(minDaSelect.value.replace('+', '') || '0') : 0;
+  
+  if (competitors.length === 0) {
+    showNotification('Please enter at least one competitor domain.');
+    return;
+  }
+
+  try {
+    const res = await fetch(`${API}/backlinkapi/competitors/analyze`, {
+      method: 'POST', 
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ 
+        your_domain: yourDomain, 
+        competitors: competitors,
+        min_da: minDa
+      })
+    });
+    
+    if (!res.ok) {
+      throw new Error(`Analysis failed: ${res.status}`);
+    }
+    
+    const data = await res.json();
+    
+    // Update the gap opportunities table
+    updateGapTable(data.gaps);
+    
+    // Update effort vs reward chart
+    updateEffortRewardChart(data.bubbles);
+    
+    // Update content opportunities
+    updateContentOpportunities(data.content_opportunities);
+    
+    // Show success notification with summary
+    showNotification(`Analysis complete! Found ${data.gaps.length} link opportunities. ${data.summary.easy_targets} easy targets, ${data.summary.medium_targets} medium, ${data.summary.hard_targets} hard.`);
+    
+  } catch (error) {
+    console.error('Competitor analysis error:', error);
+    showNotification('Analysis failed. Please try again.');
+  }
+}
+
+function updateGapTable(gaps) {
+  const tableBody = document.querySelector('#competitor-section tbody');
+  if (!tableBody) return;
+  
+  tableBody.innerHTML = '';
+  
+  gaps.forEach(gap => {
+    const row = document.createElement('tr');
+    row.className = 'border-b hover:bg-gray-50';
+    
+    const effortClass = {
+      'Easy': 'bg-green-100 text-green-800',
+      'Medium': 'bg-yellow-100 text-yellow-800', 
+      'Hard': 'bg-red-100 text-red-800'
+    }[gap.effort_level] || 'bg-gray-100 text-gray-800';
+    
+    row.innerHTML = `
+      <td class="py-3 px-4 font-medium">${gap.linking_domain}</td>
+      <td class="py-3 px-4">${gap.da}</td>
+      <td class="py-3 px-4">${gap.your_site ? '✅' : '❌'}</td>
+      <td class="py-3 px-4">${gap.competitor_a ? '✅' : '❌'}</td>
+      <td class="py-3 px-4">${gap.competitor_b ? '✅' : '❌'}</td>
+      <td class="py-3 px-4">
+        <span class="px-2 py-1 ${effortClass} rounded-full text-xs">${gap.effort_level}</span>
+      </td>
+      <td class="py-3 px-4">
+        <button class="btn-primary text-xs" onclick="startOutreach('${gap.linking_domain}')">Start Outreach</button>
+      </td>
+    `;
+    
+    tableBody.appendChild(row);
+  });
+}
+
+function updateEffortRewardChart(bubbles) {
+  const canvas = document.getElementById('effortRewardChart');
+  if (!canvas) return;
+  
+  // Destroy existing chart if it exists
+  if (window.effortRewardChartObj) {
+    window.effortRewardChartObj.destroy();
+  }
+  
+  const ctx = canvas.getContext('2d');
+  window.effortRewardChartObj = new Chart(ctx, {
+    type: 'scatter',
+    data: {
+      datasets: [{
+        label: 'Link Opportunities',
+        data: bubbles.map(b => ({
+          x: b.effort,
+          y: b.value,
+          r: b.radius
+        })),
+        backgroundColor: 'rgba(80, 70, 229, 0.6)',
+        borderColor: 'rgba(80, 70, 229, 1)',
+        borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        x: {
+          title: { display: true, text: 'Effort Level' },
+          min: 0,
+          max: 100
+        },
+        y: {
+          title: { display: true, text: 'Potential Value (DA)' },
+          min: 0,
+          max: 100
+        }
+      },
+      plugins: {
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              const bubble = bubbles[context.dataIndex];
+              return `${bubble.domain}: DA ${bubble.value}, Effort ${bubble.effort}`;
+            }
+          }
+        }
+      }
+    }
+  });
+}
+
+function updateContentOpportunities(opportunities) {
+  const container = document.querySelector('#competitor-section .space-y-4');
+  if (!container) return;
+  
+  container.innerHTML = '';
+  
+  opportunities.forEach(opp => {
+    const div = document.createElement('div');
+    div.className = 'border border-gray-200 rounded-lg p-4';
+    
+    div.innerHTML = `
+      <h4 class="font-semibold text-gray-800 mb-2">${opp.type}</h4>
+      <p class="text-sm text-gray-600 mb-3">${opp.description}</p>
+      <div class="flex space-x-2">
+        <span class="tag tag-branded">${opp.target_count} targets</span>
+        <span class="tag tag-exact">Avg DA: ${opp.avg_da}</span>
+      </div>
+      <button class="btn-primary text-xs mt-3" onclick="createContentBrief('${opp.type}', '${opp.topic}')">Create Content Brief</button>
+    `;
+    
+    container.appendChild(div);
+  });
+}
+
+function startOutreach(domain) {
+  showNotification(`Starting outreach campaign for ${domain}...`);
+  // This could open a modal or redirect to campaign creation
+  // For now, just show a notification
+  setTimeout(() => {
+    showNotification(`Outreach campaign created for ${domain}. Check your campaigns section.`);
+  }, 1500);
+}
+
+function createContentBrief(type, topic) {
+  showNotification(`Creating content brief for ${type}: ${topic}...`);
+  // This could integrate with content planning tools
+  setTimeout(() => {
+    showNotification(`Content brief created for ${topic}. Added to your content calendar.`);
+  }, 1500);
+}
+
+// === Campaigns & AI Emails ===
+async function generateEmailContent(step) {
+  try {
+    showNotification(`Generating AI content for email step ${step}...`);
+    // Collect campaign details from the Link Building Campaigns section
+    const name = document.querySelector('#campaigns-section input[placeholder="Q3 Guest Post Outreach"]').value || 'Guest Post Outreach';
+    const url = document.querySelector('#campaigns-section input[placeholder="https://yoursite.com/target-page"]').value || '';
+    const kws = document.querySelector('#campaigns-section input[placeholder="digital marketing, SEO tools"]').value || '';
+    const topic = kws.split(',')[0]?.trim() || 'your industry';
+
+    const variables = {
+      first_name: 'there',
+      topic: topic,
+      your_topic: name || 'your resource',
+      your_name: 'team',
+      url_to_promote: url,
+      target_keywords: kws
+    };
+
+    const form = new FormData();
+    form.append('step', String(step));
+    form.append('campaign_id', '');
+    form.append('variables', JSON.stringify(variables));
+
+    const res = await fetch(`${API}/backlinkapi/emails/generate`, { method: 'POST', body: form });
+    if (!res.ok) {
+      const errText = await res.text();
+      throw new Error(errText || `Request failed with ${res.status}`);
+    }
+    const data = await res.json();
+    // Put the body back into the correct textarea
+    const areas = document.querySelectorAll('#campaigns-section textarea');
+    if (areas[step-1]) areas[step-1].value = data.body;
+    showNotification('Email content generated successfully!');
+  } catch (e) {
+    showNotification('Failed to generate email. Please try again.');
+    console.error(e);
+  }
+}
+
+async function launchCampaign() {
+  showNotification('Launching link building campaign...');
+  const name = document.querySelector('#campaigns-section input[placeholder="Q3 Guest Post Outreach"]').value || 'Guest Post Outreach';
+  const url = document.querySelector('#campaigns-section input[placeholder="https://yoursite.com/target-page"]').value || '';
+  const kws = document.querySelector('#campaigns-section input[placeholder="digital marketing, SEO tools"]').value || '';
+  const res = await fetch(`${API}/backlinkapi/campaigns`, {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ name, url_to_promote: url, target_keywords: kws })
+  });
+  const data = await res.json();
+  showNotification(`Campaign launched. ID: ${data.campaign_id}`);
+}
+
+// === Import & Export ===
+async function importData() {
+  const modal = document.querySelector('#import-modal');
+  const fileInput = modal.querySelector('input[type="file"]');
+  if (!fileInput.files[0]) { showNotification('Please choose a CSV file'); return; }
+  const fd = new FormData();
+  fd.append('source','csv');
+  fd.append('file', fileInput.files[0]);
+  const res = await fetch(`${API}/backlinkapi/backlinks/import`, { method:'POST', body: fd });
+  const data = await res.json();
+  hideModal('import-modal');
+  showNotification(`Successfully imported ${data.inserted} backlinks from CSV file.`);
+  await hydrateDashboard();
+}
+
+async function exportData() {
+  hideModal('export-modal');
+  showNotification('Generating export file...');
+  const res = await fetch(`${API}/backlinkapi/export/backlinks.csv`);
+  const blob = await res.blob();
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = 'backlinks.csv'; a.click();
+  URL.revokeObjectURL(url);
+  showNotification('Report exported successfully! Download started.');
+}
+
+// hydrate on first load
+document.addEventListener('DOMContentLoaded', hydrateDashboard);
+
+// === Demo Mode ===
+window.demoMode = false;
+function toggleDemo() {
+  window.demoMode = !window.demoMode;
+  const btns = Array.from(document.querySelectorAll('button')).filter(b => b.textContent.trim().includes('Demo Data'));
+  btns.forEach(b => {
+    if (window.demoMode) {
+      b.classList.remove('btn-secondary');
+      b.classList.add('btn-primary');
+    } else {
+      b.classList.remove('btn-primary');
+      b.classList.add('btn-secondary');
+    }
+  });
+  if (window.demoMode) {
+    renderDemo();
+    showNotification('Demo data enabled.');
+  } else {
+    clearDemo();
+    hydrateDashboard();
+    showNotification('Demo data disabled.');
+  }
+}
+
+function clearDemo() {
+  // Clear metric cards
+  const cards = document.querySelectorAll('.metric-card .text-2xl');
+  cards.forEach(c => c.textContent = '-');
+  // Clear charts
+  if (window.healthChartObj) { window.healthChartObj.destroy(); window.healthChartObj = null; }
+  if (window.anchorChartObj) { window.anchorChartObj.destroy(); window.anchorChartObj = null; }
+  const healthCtx = document.getElementById('healthChart'); if (healthCtx) healthCtx.getContext('2d').clearRect(0,0,healthCtx.width,healthCtx.height);
+  const anchorCtx = document.getElementById('anchorChart'); if (anchorCtx) anchorCtx.getContext('2d').clearRect(0,0,anchorCtx.width,anchorCtx.height);
+  // Clear risk table
+  const tbody = document.getElementById('risk-table-body'); if (tbody) tbody.innerHTML = '';
+}
+
+function renderDemo(data) {
+  // Metrics
+  const cards = document.querySelectorAll('.metric-card .text-2xl');
+  if (cards.length >= 4 && data && data.cards) {
+    cards[0].textContent = data.cards.total_backlinks;
+    cards[1].textContent = data.cards.referring_domains;
+    cards[2].textContent = data.cards.average_da;
+    cards[3].textContent = data.cards.toxic_links;
+  }
+
+  // Charts
+  if (window.healthChartObj) window.healthChartObj.destroy();
+  if (window.anchorChartObj) window.anchorChartObj.destroy();
+
+  const healthCtx = document.getElementById('healthChart');
+  if (healthCtx && data && data.health_scorecard) {
+    window.healthChartObj = new Chart(healthCtx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Healthy Links', 'Warning', 'Toxic'],
+        datasets: [{ data: [data.health_scorecard.healthy, data.health_scorecard.warning, data.health_scorecard.toxic], backgroundColor: ['#10b981', '#f59e0b', '#ef4444'] }]
+      },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+    });
+  }
+
+  const anchorCtx = document.getElementById('anchorChart');
+  if (anchorCtx && data && data.anchor_distribution) {
+    const a = data.anchor_distribution;
+    window.anchorChartObj = new Chart(anchorCtx, {
+      type: 'pie',
+      data: {
+        labels: Object.keys(a),
+        datasets: [{ data: Object.values(a), backgroundColor: ['#5046e5', '#00c4cc', '#f59e0b', '#10b981', '#6b7280'] }]
+      },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+    });
+  }
+
+  // Risk table
+  const tbody = document.getElementById('risk-table-body');
+  if (tbody && data && Array.isArray(data.risk_table)) {
+    tbody.innerHTML = '';
+    data.risk_table.forEach(r => {
+      const tr = document.createElement('tr');
+      tr.className = 'border-b hover:bg-gray-50';
+      tr.innerHTML = `
+        <td class="py-3 px-4 font-medium">${r.source_domain}</td>
+        <td class="py-3 px-4">${r.da}</td>
+        <td class="py-3 px-4 ${r.risk_level === 'high' ? 'risk-high' : r.risk_level === 'medium' ? 'risk-medium' : 'risk-low'}">${r.risk_level}</td>
+        <td class="py-3 px-4">${r.anchor_text}</td>
+        <td class="py-3 px-4"><button class="btn-secondary text-xs" onclick="markForDisavow(this)">Mark for Disavow</button></td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+}
+</script>
+
+</body>
+</html>
